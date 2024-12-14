@@ -38,7 +38,8 @@ class RoomsCategory extends StatelessWidget {
                         state is GetRoomsFailureState) {
                       return _buildDataLoading();
                     } else {
-                      return _controller.iconsId.isEmpty
+                      // return _controller.iconsId.isEmpty
+                      return _controller.roomInfo1.isEmpty
                           ? _buildRoomDataNotFount()
                           : _buildLoadRoomData();
                     }
@@ -148,47 +149,66 @@ class RoomsCategory extends StatelessWidget {
   }
 
   // ! Data loaded
-  ListView _buildLoadRoomData() {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: _controller.iconsId.length,
-      itemBuilder: (context, index) {
-        return Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  height: 50,
-                  width: 50,
-                  decoration: const BoxDecoration(
-                    color: SColors.grey,
-                    shape: BoxShape.circle,
-                  ),
-                  child:
-                      FUI(_controller.roomList[_controller.iconsId[index]]![0]),
+  Obx _buildLoadRoomData() {
+    return Obx(() {
+      return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: _controller.roomInfo1.length,
+        // itemCount: _controller.roomInfo.length,
+        itemBuilder: (context, index) {
+          return Row(
+            children: [
+              GestureDetector(
+                onTap: () => _controller.toggleRoomSelection(index),
+                // onTap: () => print("Tapped : $index"),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        color: SColors.grey,
+                        shape: BoxShape.circle,
+                        border: (_controller.roomInfo1[index].isActive ?? false)
+                            ? Border.all(
+                                color: SColors.primary.withOpacity(.5),
+                                width: 2.0,
+                              )
+                            : null,
+                      ),
+                      // child: FUI(_controller.roomInfo[index].icon),
+                      child: FUI(_controller
+                          .roomList[_controller.roomInfo1[index].iconId]![0]),
+                      //  child:
+                      // FUI(_controller.roomList[_controller.iconsId[index]]![0]),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: 60,
+                      child: Text(
+                        // _controller.roomInfo[index].title,
+                        _controller
+                            .roomList[_controller.roomInfo1[index].iconId]![1],
+                        // _controller.roomList[_controller.iconsId[index]]![1],
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall!
+                            .copyWith(fontSize: 8),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: 60,
-                  child: Text(
-                    _controller.roomList[_controller.iconsId[index]]![1],
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelSmall!
-                        .copyWith(fontSize: 8),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(width: 10),
-          ],
-        );
-      },
-    );
+              ),
+              const SizedBox(width: 10),
+            ],
+          );
+        },
+      );
+    });
   }
 }

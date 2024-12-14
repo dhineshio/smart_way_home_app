@@ -16,6 +16,16 @@ class AddRoomsFailureState extends RoomsState {
   AddRoomsFailureState({required this.error});
 }
 
+class AddRoomsNewSuccessState extends RoomsState {
+  final Map<String, dynamic> response;
+  AddRoomsNewSuccessState({required this.response});
+}
+
+class AddRoomsNewFailureState extends RoomsState {
+  final String error;
+  AddRoomsNewFailureState({required this.error});
+}
+
 class GetRoomsSuccessState extends RoomsState {
   final List<dynamic> response;
   GetRoomsSuccessState({required this.response});

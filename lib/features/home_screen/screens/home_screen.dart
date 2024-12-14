@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Devices(),
+                // child: Devices(),
               ),
             ],
           ),

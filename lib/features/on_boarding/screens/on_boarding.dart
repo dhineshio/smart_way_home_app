@@ -63,7 +63,7 @@ class OnBoarding extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-                      Get.toNamed(SAppRoutes.loginPage);
+                      Get.toNamed(SAppRoutes.mainScreen);
                     },
                     child: Text(
                       "Skip",
@@ -83,11 +83,11 @@ class OnBoarding extends StatelessWidget {
                     onPressed: () {
                       if (!onBoardingController.isLastPage.value) {
                         onBoardingController.pageController.nextPage(
-                          duration: 300.milliseconds,
+                          duration: 200.milliseconds,
                           curve: Curves.easeIn,
                         );
                       } else {
-                        Get.offNamed(SAppRoutes.loginPage);
+                        Get.offNamed(SAppRoutes.mainScreen);
                       }
                     },
                     child: Obx(

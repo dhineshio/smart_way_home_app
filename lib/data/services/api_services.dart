@@ -4,6 +4,7 @@ import 'package:smart_way_home/features/authentication/models/login_req_model.da
 import 'package:smart_way_home/features/authentication/models/register_req_model.dart';
 import 'package:smart_way_home/features/authentication/models/verify_otp_model.dart';
 import 'package:smart_way_home/features/home_screen/models/add_rooms_model.dart';
+import 'package:smart_way_home/features/home_screen/models/new/add_room_new_model.dart';
 import 'package:smart_way_home/utils/constants/secrets.dart';
 import 'package:smart_way_home/utils/http/http_client.dart';
 import 'package:smart_way_home/utils/service_locator/service_locator.dart';
@@ -15,6 +16,8 @@ abstract class ApiService {
   Future<Either> verifyOtp(VerifyOtpModel verifyOtpModel);
   Future<Either> addRooms(AddRoomsModel addRoomsModel);
   Future<Either> getRooms(String token);
+  Future<Either> addRoomsNew(AddRoomNewModel addDeviceNewModel);
+  Future<Either> getDeviceNew(int roomId);
 }
 
 class ApiServiceImpl extends ApiService {
@@ -103,6 +106,35 @@ class ApiServiceImpl extends ApiService {
         Secrets.getRooms,
         options: Options(headers: {"Authorization": token}),
       );
+      if (response.statusCode == 200) {
+        return Right(response.data);
+      } else {
+        return Left(response.data);
+      }
+    } on DioException catch (e) {
+      return Left(e.response!.data);
+    }
+  }
+
+  @override
+  Future<Either> addRoomsNew(AddRoomNewModel addDeviceNewModel) async {
+    try {
+      final response = await getIt<HttpClient>()
+          .post(Secrets.addRoomsNew, data: addDeviceNewModel.toMap());
+      if (response.statusCode == 200) {
+        return Right(response.data);
+      } else {
+        return Left(response.data);
+      }
+    } on DioException catch (e) {
+      return Left(e.response!.data);
+    }
+  }
+
+  @override
+  Future<Either> getDeviceNew(int roomId) async {
+    try {
+      final response = await getIt<HttpClient>().post(Secrets.addRoomsNew);
       if (response.statusCode == 200) {
         return Right(response.data);
       } else {

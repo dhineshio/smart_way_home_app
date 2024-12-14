@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:smart_way_home/features/home_screen/models/add_rooms_model.dart';
+import 'package:smart_way_home/features/home_screen/models/new/add_room_new_model.dart';
+import 'package:smart_way_home/features/home_screen/usecase/add_room_new_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/add_room_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/get_room_use_case.dart';
 import 'package:smart_way_home/utils/service_locator/service_locator.dart';
@@ -11,6 +13,24 @@ part 'rooms_state.dart';
 
 class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
   RoomsBloc() : super(RoomsInitialState()) {
+    on<AddRoomsNewEvent>((state, emit) async {
+      try {
+        emit(RoomsLoadingState());
+        final roomName = state.roomName;
+        final esp32Ip = state.esp32Ip;
+        final response = await getIt<AddRoomNewUseCase>().call(
+          AddRoomNewModel(name: roomName, esp32Ip: esp32Ip),
+        );
+        return response.fold(
+            (failure) => emit(AddRoomsNewFailureState(error: "Failed to Add")),
+            (success) {
+          return emit(
+              AddRoomsNewSuccessState(response: (response as Right).value));
+        });
+      } catch (e) {
+        return emit(AddRoomsFailureState(error: e.toString()));
+      }
+    });
     on<AddRoomsEvent>((state, emit) async {
       try {
         emit(RoomsLoadingState());

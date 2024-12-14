@@ -9,6 +9,7 @@ import 'package:smart_way_home/features/authentication/usecase/register_use_case
 import 'package:smart_way_home/features/authentication/usecase/send_otp_use_case.dart';
 import 'package:smart_way_home/features/authentication/usecase/verify_otp_use_case.dart';
 import 'package:smart_way_home/features/home_screen/bloc/rooms_bloc.dart';
+import 'package:smart_way_home/features/home_screen/usecase/add_room_new_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/add_room_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/get_room_use_case.dart';
 import 'package:smart_way_home/utils/http/http_client.dart';
@@ -34,6 +35,7 @@ Future<void> initiate() async {
   getIt.registerSingleton<VerifyOtpUseCase>(VerifyOtpUseCase());
   getIt.registerSingleton<AddRoomUseCase>(AddRoomUseCase());
   getIt.registerSingleton<GetRoomUseCase>(GetRoomUseCase());
+  getIt.registerSingleton<AddRoomNewUseCase>(AddRoomNewUseCase());
 
   // BLoc
   getIt.registerLazySingleton<AuthBloc>(() => AuthBloc());

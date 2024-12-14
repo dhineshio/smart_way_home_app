@@ -4,11 +4,15 @@ import 'package:get/get.dart';
 import 'package:smart_way_home/features/home_screen/bloc/rooms_bloc.dart';
 import 'package:smart_way_home/features/home_screen/controllers/rooms_controller.dart';
 import 'package:smart_way_home/features/home_screen/models/local/room_icon_model.dart';
+import 'package:smart_way_home/features/home_screen/models/new/add_room_new_model.dart';
+import 'package:smart_way_home/features/home_screen/models/new/rooms_info_model.dart';
+import 'package:smart_way_home/features/home_screen/usecase/add_room_new_use_case.dart';
 import 'package:smart_way_home/utils/constants/colors.dart';
 import 'package:smart_way_home/utils/constants/icons.dart';
 import 'package:smart_way_home/utils/constants/sizes.dart';
 import 'package:smart_way_home/utils/devices/device_utils.dart';
 import 'package:smart_way_home/utils/image_convert/FUI.dart';
+import 'package:smart_way_home/utils/service_locator/service_locator.dart';
 
 class RoomsAddBs extends StatelessWidget {
   RoomsAddBs({super.key});
@@ -18,7 +22,7 @@ class RoomsAddBs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: SDeviceUtils.getScreenWidth(context),
-      height: SDeviceUtils.getScreenHeight() * 0.55,
+      height: SDeviceUtils.getScreenHeight() * 0.65,
       color: SColors.containerLight,
       padding: const EdgeInsets.all(15),
       child: Column(
@@ -26,6 +30,16 @@ class RoomsAddBs extends StatelessWidget {
           Text(
             "Add a Rooms",
             style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: SSizes.spaceBtwSections),
+          TextField(
+            decoration: const InputDecoration(
+              hintText: "192.168.0.1",
+              hintStyle: TextStyle(color: SColors.grey),
+            ),
+            controller: _controller.esp32IpController,
+            focusNode: _controller.esp32IpFocusNode,
+            keyboardType: TextInputType.number,
           ),
           const SizedBox(height: SSizes.spaceBtwSections),
           Expanded(
@@ -101,6 +115,34 @@ class RoomsAddBs extends StatelessWidget {
             child: BlocConsumer<RoomsBloc, RoomsState>(
               listener: (context, state) {
                 if (state is AddRoomsFailureState) {}
+                if (state is AddRoomsNewSuccessState) {
+                  var roomId = state.response['id'];
+                  var iconId = _controller.clickedIcon.value;
+                  var roomName = state.response['name'];
+                  _controller.roomInfo1.add(RoomsInfoModel(
+                    roomId: roomId,
+                    iconId: iconId,
+                    roomName: roomName,
+                  ));
+                  Get.back();
+                  Get.snackbar(
+                    "Success",
+                    snackPosition: SnackPosition.TOP,
+                    "${state.response['name']} has added",
+                    backgroundColor: SColors.success,
+                    colorText: SColors.textWhite,
+                    duration: 800.milliseconds,
+                  );
+                }
+                if (state is AddRoomsNewFailureState) {
+                  Get.snackbar(
+                    "Failed",
+                    state.error,
+                    backgroundColor: SColors.error,
+                    colorText: SColors.textWhite,
+                    duration: 800.milliseconds,
+                  );
+                }
                 if (state is AddRoomsSuccessState) {
                   _controller.roomsBloc.add(GetRoomsEvent());
                   Get.back();
@@ -110,7 +152,7 @@ class RoomsAddBs extends StatelessWidget {
               builder: (context, state) {
                 return ElevatedButton(
                   onPressed: () {
-                    var iconId = _controller.roomsIconList
+                    var roomName = _controller.roomsIconList
                         .firstWhere(
                           (item) => item.isSelected ?? false,
                           orElse: () => RoomIconModel(
@@ -118,13 +160,37 @@ class RoomsAddBs extends StatelessWidget {
                               title: "None",
                               icon: SIcons.passwordIcon),
                         )
+                        .title;
+                    var iconId = _controller.roomsIconList
+                        .firstWhere(
+                          (item) => item.isSelected ?? false,
+                          orElse: () => RoomIconModel(
+                            id: 100,
+                            title: "None",
+                            icon: SIcons.passwordIcon,
+                          ),
+                        )
                         .id;
-                    if (iconId == 100) {
+                    // context.read<RoomsBloc>().add(
+                    //       AddRoomsEvent(iconId: iconId.toString()),
+                    //     );
+                    if (roomName == "None" || iconId == 100) {
                       print("None has selected");
+                      return;
                     }
+                    _controller.clickedIcon.value = iconId;
+                    // print(iconId);
+                    // print(_controller.esp32IpController.text);
                     context.read<RoomsBloc>().add(
-                          AddRoomsEvent(iconId: iconId.toString()),
+                          AddRoomsNewEvent(
+                            roomName: roomName,
+                            esp32Ip: _controller.esp32IpController.text,
+                          ),
                         );
+                    // getIt<AddRoomNewUseCase>().call(AddRoomNewModel(
+                    //   name: roomName,
+                    //   esp32Ip: _controller.esp32IpController.text,
+                    // ));
                   },
                   child: const Text("+ Add"),
                 );
