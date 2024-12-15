@@ -41,8 +41,8 @@ class Devices extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const FUI(
-                          SIcons.passwordIcon,
+                        FUI(
+                          _controller.filteredDeviceList[index].deviceIcon,
                           width: 40,
                           height: 40,
                         ),

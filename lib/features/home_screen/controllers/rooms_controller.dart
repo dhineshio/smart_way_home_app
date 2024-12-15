@@ -25,57 +25,6 @@ class RoomsController extends GetxController {
     filteredDeviceList.refresh();
   }
 
-  final roomInfo = [
-    RoomIconModel(
-      id: 1,
-      title: "Hall",
-      icon: SIcons.roomHall,
-      isSelected: true,
-    ),
-    RoomIconModel(
-      id: 2,
-      title: "BedRoom",
-      icon: SIcons.roomBedRoom,
-      isSelected: false,
-    ),
-    RoomIconModel(
-      id: 3,
-      title: "Kitchen",
-      icon: SIcons.roomKitchen,
-      isSelected: false,
-    ),
-    RoomIconModel(
-        id: 4,
-        title: "LivingRoom",
-        icon: SIcons.roomLivingRoom,
-        isSelected: false),
-    RoomIconModel(
-        id: 5, title: "BathRoom", icon: SIcons.roomBathRoom, isSelected: false),
-    RoomIconModel(
-        id: 6,
-        title: "StudyRoom",
-        icon: SIcons.roomStudyRoom,
-        isSelected: false),
-    RoomIconModel(
-        id: 7,
-        title: "DiningRoom",
-        icon: SIcons.roomDiningRoom,
-        isSelected: false),
-    RoomIconModel(
-        id: 8,
-        title: "GuestRoom",
-        icon: SIcons.roomGuestRoom,
-        isSelected: false),
-    RoomIconModel(
-        id: 9, title: "KidsRoom", icon: SIcons.roomKidsRoom, isSelected: false),
-    RoomIconModel(
-      id: 10,
-      title: "Balcany",
-      icon: SIcons.roomBalcany,
-      isSelected: false,
-    )
-  ].obs;
-
   final roomsIconList = [
     RoomIconModel(
       id: 101,
@@ -158,14 +107,14 @@ class RoomsController extends GetxController {
       deviceId: 102,
       deviceName: "Light-2",
       deviceType: "None",
-      iconId: SIcons.roomHall,
+      iconId: SIcons.roomKitchen,
       isClicked: false,
     ),
     DeviceIconModel(
       deviceId: 103,
       deviceName: "Light-3",
       deviceType: "None",
-      iconId: SIcons.roomHall,
+      iconId: SIcons.roomBalcany,
       isClicked: false,
     ),
     DeviceIconModel(
@@ -179,7 +128,7 @@ class RoomsController extends GetxController {
       deviceId: 105,
       deviceName: "Light",
       deviceType: "None",
-      iconId: SIcons.roomHall,
+      iconId: SIcons.roomDiningRoom,
       isClicked: false,
     ),
   ].obs;
@@ -195,10 +144,8 @@ class RoomsController extends GetxController {
   }
 
   void toggleRoomSelection(int index) {
-    // print(roomInfo1[index].roomId);
     selectedRoom = roomInfo1[index].roomId.obs;
     filterDevicesByRoomId(selectedRoom.value);
-    print("Selecrtedd room : $selectedRoom");
     for (int i = 0; i < roomInfo1.length; i++) {
       roomInfo1[i].isActive = i == index;
     }
@@ -219,11 +166,11 @@ class RoomsController extends GetxController {
     deviceList.refresh();
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    // roomsBloc.add(GetRoomsEvent());
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   // roomsBloc.add(GetRoomsEvent());
+  // }
 
   @override
   void onClose() {
