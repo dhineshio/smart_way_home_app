@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_way_home/features/home_screen/controllers/rooms_controller.dart';
 import 'package:smart_way_home/features/home_screen/widgets/device_add_bs.dart';
+import 'package:smart_way_home/features/home_screen/widgets/devices.dart';
 import 'package:smart_way_home/features/home_screen/widgets/rooms_category.dart';
 import 'package:smart_way_home/features/home_screen/widgets/top_bar_widget.dart';
 import 'package:smart_way_home/utils/constants/colors.dart';
@@ -78,17 +79,13 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: SSizes.spaceBtwItems),
-              // Container(
-              //   width: double.infinity,
-              //   height: SDeviceUtils.getScreenHeight() * 0.5,
-              //   decoration: BoxDecoration(
-              //       // borderRadius: BorderRadius.circular(10),
-              //       // color: SColors.primary.withOpacity(0.05),
-              //       ),
-              //   padding:
-              //       const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              //   // child: Devices(),
-              // ),
+              Container(
+                width: double.infinity,
+                height: SDeviceUtils.getScreenHeight() * 0.46,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: Devices(),
+              ),
             ],
           ),
         ),

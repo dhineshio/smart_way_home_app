@@ -121,6 +121,7 @@ class RoomsAddBs extends StatelessWidget {
                     iconId: iconId,
                     roomName: roomName,
                   ));
+                  _controller.toggleRoomSelection(0);
                   Get.back();
                   Get.snackbar(
                     "Success",

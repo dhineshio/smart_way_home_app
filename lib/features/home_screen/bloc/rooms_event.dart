@@ -13,4 +13,16 @@ class AddRoomsNewEvent extends RoomsEvent {
   AddRoomsNewEvent({required this.roomName, required this.esp32Ip});
 }
 
+class AddDeviceEvent extends RoomsEvent {
+  final int roomId;
+  final String deviceName;
+  final String deviceType;
+
+  AddDeviceEvent({
+    required this.roomId,
+    required this.deviceName,
+    required this.deviceType,
+  });
+}
+
 class GetRoomsEvent extends RoomsEvent {}

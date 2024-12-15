@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:smart_way_home/features/home_screen/bloc/rooms_bloc.dart';
 import 'package:smart_way_home/features/home_screen/controllers/rooms_controller.dart';
 import 'package:smart_way_home/features/home_screen/models/local/device_icon_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/add_device_req_model.dart';
+import 'package:smart_way_home/features/home_screen/models/new/device_info_model.dart';
 import 'package:smart_way_home/features/home_screen/usecase/add_new_device_use_case.dart';
 import 'package:smart_way_home/utils/constants/colors.dart';
 import 'package:smart_way_home/utils/constants/icons.dart';
@@ -33,6 +36,7 @@ class DeviceAddBs extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: SSizes.spaceBtwSections),
+                // ! Choosing Devices
                 Expanded(
                   child: Obx(
                     () {
@@ -111,40 +115,103 @@ class DeviceAddBs extends StatelessWidget {
           SizedBox(
             width: SDeviceUtils.getScreenWidth(context),
             height: 50,
-            child: ElevatedButton(
-              onPressed: () {
-                var roomId = _controller.selectedRoom.value;
-                var deviceName = _controller.deviceList
-                    .firstWhere(
-                      (item) => item.isClicked ?? false,
-                      orElse: () => DeviceIconModel(
-                        deviceId: 0,
-                        deviceName: 'None',
-                        deviceType: 'None',
-                        iconId: SIcons.passwordIcon,
-                      ),
-                    )
-                    .deviceName;
-                var deviceType = _controller.deviceList
-                    .firstWhere(
-                      (item) => item.isClicked ?? false,
-                      orElse: () => DeviceIconModel(
-                        deviceId: 0,
-                        deviceName: 'None',
-                        deviceType: 'None',
-                        iconId: SIcons.passwordIcon,
-                      ),
-                    )
-                    .deviceType;
-                getIt<AddNewDeviceUseCase>().call(
-                  AddDeviceReqModel(
-                    roomId: roomId,
-                    name: deviceName,
-                    type: deviceType,
-                  ),
+            child: BlocConsumer<RoomsBloc, RoomsState>(
+              listener: (context, state) {
+                if (state is AddDeviceSuccessState) {
+                  var roomId = _controller.selectedRoom.value;
+                  var deviceId = state.response['id'];
+                  var deviceName = state.response['name'];
+                  var deviceType = state.response['type'];
+                  var status = state.response['status'];
+                  var deviceIcon = _controller.deviceList
+                      .firstWhere(
+                        (item) => item.isClicked ?? false,
+                        orElse: () => DeviceIconModel(
+                          deviceId: 0,
+                          deviceName: 'None',
+                          deviceType: 'None',
+                          iconId: SIcons.passwordIcon,
+                        ),
+                      )
+                      .iconId;
+
+                  _controller.deviceInfo.add(
+                    DeviceInfoModel(
+                      roomId: roomId,
+                      deviceId: deviceId,
+                      deviceIcon: deviceIcon,
+                      deviceName: deviceName,
+                      deviceType: deviceType,
+                      isActive: status,
+                    ),
+                  );
+                  _controller.filterDevicesByRoomId(roomId);
+
+                  Get.back();
+                  Get.snackbar(
+                    "Success",
+                    snackPosition: SnackPosition.TOP,
+                    "$deviceName has added",
+                    backgroundColor: SColors.success,
+                    colorText: SColors.textWhite,
+                    duration: 800.milliseconds,
+                  );
+                }
+                if (state is AddDeviceFailureState) {
+                  Get.snackbar(
+                    "Failed",
+                    state.error,
+                    backgroundColor: SColors.error,
+                    colorText: SColors.textWhite,
+                    duration: 800.milliseconds,
+                  );
+                }
+              },
+              builder: (context, state) {
+                return ElevatedButton(
+                  onPressed: () {
+                    var roomId = _controller.selectedRoom.value;
+                    var deviceName = _controller.deviceList
+                        .firstWhere(
+                          (item) => item.isClicked ?? false,
+                          orElse: () => DeviceIconModel(
+                            deviceId: 0,
+                            deviceName: 'None',
+                            deviceType: 'None',
+                            iconId: SIcons.passwordIcon,
+                          ),
+                        )
+                        .deviceName;
+                    var deviceType = _controller.deviceList
+                        .firstWhere(
+                          (item) => item.isClicked ?? false,
+                          orElse: () => DeviceIconModel(
+                            deviceId: 0,
+                            deviceName: 'None',
+                            deviceType: 'None',
+                            iconId: SIcons.passwordIcon,
+                          ),
+                        )
+                        .deviceType;
+
+                    context.read<RoomsBloc>().add(
+                          AddDeviceEvent(
+                            roomId: roomId,
+                            deviceName: deviceName,
+                            deviceType: deviceType,
+                          ),
+                        );
+                    // getIt<AddNewDeviceUseCase>().call(
+                    //   AddDeviceReqModel(
+                    //     roomId: roomId,
+                    //     name: deviceName,
+                    //     type: deviceType,
+                    //   ),
+                    // );
+                  },
+                  child: const Text("Add a Device"),
                 );
               },
-              child: const Text("Add a Device"),
             ),
           )
         ],

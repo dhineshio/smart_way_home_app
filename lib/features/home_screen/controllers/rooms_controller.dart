@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:smart_way_home/features/home_screen/bloc/rooms_bloc.dart';
 import 'package:smart_way_home/features/home_screen/models/local/device_icon_model.dart';
 import 'package:smart_way_home/features/home_screen/models/local/room_icon_model.dart';
+import 'package:smart_way_home/features/home_screen/models/new/device_info_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/rooms_info_model.dart';
 import 'package:smart_way_home/utils/constants/icons.dart';
 import 'package:smart_way_home/utils/service_locator/service_locator.dart';
@@ -14,7 +15,15 @@ class RoomsController extends GetxController {
   final iconsId = [].obs;
   final roomId = [].obs;
   var roomInfo1 = <RoomsInfoModel>[].obs;
+  var deviceInfo = <DeviceInfoModel>[].obs;
+  var filteredDeviceList = <DeviceInfoModel>[].obs;
   var selectedRoom = 0.obs;
+
+  void filterDevicesByRoomId(int roomId) {
+    filteredDeviceList.value =
+        deviceInfo.where((device) => device.roomId == roomId).toList();
+    filteredDeviceList.refresh();
+  }
 
   final roomInfo = [
     RoomIconModel(
@@ -188,6 +197,7 @@ class RoomsController extends GetxController {
   void toggleRoomSelection(int index) {
     // print(roomInfo1[index].roomId);
     selectedRoom = roomInfo1[index].roomId.obs;
+    filterDevicesByRoomId(selectedRoom.value);
     print("Selecrtedd room : $selectedRoom");
     for (int i = 0; i < roomInfo1.length; i++) {
       roomInfo1[i].isActive = i == index;
