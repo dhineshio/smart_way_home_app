@@ -4,6 +4,7 @@ import 'package:smart_way_home/features/authentication/models/login_req_model.da
 import 'package:smart_way_home/features/authentication/models/register_req_model.dart';
 import 'package:smart_way_home/features/authentication/models/verify_otp_model.dart';
 import 'package:smart_way_home/features/home_screen/models/add_rooms_model.dart';
+import 'package:smart_way_home/features/home_screen/models/new/add_device_req_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/add_room_new_model.dart';
 import 'package:smart_way_home/utils/constants/secrets.dart';
 import 'package:smart_way_home/utils/http/http_client.dart';
@@ -17,7 +18,7 @@ abstract class ApiService {
   Future<Either> addRooms(AddRoomsModel addRoomsModel);
   Future<Either> getRooms(String token);
   Future<Either> addRoomsNew(AddRoomNewModel addDeviceNewModel);
-  Future<Either> getDeviceNew(int roomId);
+  Future<Either> addNewDevice(AddDeviceReqModel addDeviceReqModel);
 }
 
 class ApiServiceImpl extends ApiService {
@@ -132,9 +133,11 @@ class ApiServiceImpl extends ApiService {
   }
 
   @override
-  Future<Either> getDeviceNew(int roomId) async {
+  Future<Either> addNewDevice(AddDeviceReqModel addDeviceReqModel) async {
     try {
-      final response = await getIt<HttpClient>().post(Secrets.addRoomsNew);
+      final response = await getIt<HttpClient>().post(
+          "${Secrets.addRoomsNew}/${addDeviceReqModel.roomId}/devices",
+          data: addDeviceReqModel.toMap());
       if (response.statusCode == 200) {
         return Right(response.data);
       } else {

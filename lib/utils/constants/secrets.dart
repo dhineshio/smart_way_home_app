@@ -8,6 +8,6 @@ class Secrets {
   static const String addRooms = "$baseUrl/rooms";
   static const String getRooms = "$baseUrl/rooms";
   static const String baseUrlNew =
-      "https://5622-2401-4900-1cd4-a246-a12f-cc88-b5f-70b8.ngrok-free.app";
+      "https://3c10-2401-4900-1cd4-a246-ac86-802a-b366-53be.ngrok-free.app";
   static const String addRoomsNew = "$baseUrlNew/api/rooms";
 }

@@ -15,7 +15,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> navScreens = [
-      const HomeScreen(),
+      HomeScreen(),
       const FavouriteScreen(),
       const ChartScreen(),
       const SettingsScreen()

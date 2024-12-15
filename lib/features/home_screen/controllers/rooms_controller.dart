@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_way_home/features/home_screen/bloc/rooms_bloc.dart';
+import 'package:smart_way_home/features/home_screen/models/local/device_icon_model.dart';
 import 'package:smart_way_home/features/home_screen/models/local/room_icon_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/rooms_info_model.dart';
 import 'package:smart_way_home/utils/constants/icons.dart';
@@ -13,6 +14,7 @@ class RoomsController extends GetxController {
   final iconsId = [].obs;
   final roomId = [].obs;
   var roomInfo1 = <RoomsInfoModel>[].obs;
+  var selectedRoom = 0.obs;
 
   final roomInfo = [
     RoomIconModel(
@@ -135,6 +137,44 @@ class RoomsController extends GetxController {
     110: [SIcons.roomBalcany, "Balcany"]
   };
 
+  final deviceList = [
+    DeviceIconModel(
+      deviceId: 101,
+      deviceName: "Light-1",
+      deviceType: "None",
+      iconId: SIcons.roomHall,
+      isClicked: false,
+    ),
+    DeviceIconModel(
+      deviceId: 102,
+      deviceName: "Light-2",
+      deviceType: "None",
+      iconId: SIcons.roomHall,
+      isClicked: false,
+    ),
+    DeviceIconModel(
+      deviceId: 103,
+      deviceName: "Light-3",
+      deviceType: "None",
+      iconId: SIcons.roomHall,
+      isClicked: false,
+    ),
+    DeviceIconModel(
+      deviceId: 104,
+      deviceName: "Light-4",
+      deviceType: "None",
+      iconId: SIcons.roomHall,
+      isClicked: false,
+    ),
+    DeviceIconModel(
+      deviceId: 105,
+      deviceName: "Light",
+      deviceType: "None",
+      iconId: SIcons.roomHall,
+      isClicked: false,
+    ),
+  ].obs;
+
   final TextEditingController esp32IpController = TextEditingController();
   final FocusNode esp32IpFocusNode = FocusNode();
 
@@ -146,6 +186,9 @@ class RoomsController extends GetxController {
   }
 
   void toggleRoomSelection(int index) {
+    // print(roomInfo1[index].roomId);
+    selectedRoom = roomInfo1[index].roomId.obs;
+    print("Selecrtedd room : $selectedRoom");
     for (int i = 0; i < roomInfo1.length; i++) {
       roomInfo1[i].isActive = i == index;
     }
@@ -157,6 +200,13 @@ class RoomsController extends GetxController {
       roomsIconList[i].isSelected = i == index;
     }
     roomsIconList.refresh();
+  }
+
+  void toggleDeviceSelection(int index) {
+    for (int i = 0; i < deviceList.length; i++) {
+      deviceList[i].isClicked = i == index;
+    }
+    deviceList.refresh();
   }
 
   @override

@@ -4,15 +4,12 @@ import 'package:get/get.dart';
 import 'package:smart_way_home/features/home_screen/bloc/rooms_bloc.dart';
 import 'package:smart_way_home/features/home_screen/controllers/rooms_controller.dart';
 import 'package:smart_way_home/features/home_screen/models/local/room_icon_model.dart';
-import 'package:smart_way_home/features/home_screen/models/new/add_room_new_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/rooms_info_model.dart';
-import 'package:smart_way_home/features/home_screen/usecase/add_room_new_use_case.dart';
 import 'package:smart_way_home/utils/constants/colors.dart';
 import 'package:smart_way_home/utils/constants/icons.dart';
 import 'package:smart_way_home/utils/constants/sizes.dart';
 import 'package:smart_way_home/utils/devices/device_utils.dart';
 import 'package:smart_way_home/utils/image_convert/FUI.dart';
-import 'package:smart_way_home/utils/service_locator/service_locator.dart';
 
 class RoomsAddBs extends StatelessWidget {
   RoomsAddBs({super.key});
