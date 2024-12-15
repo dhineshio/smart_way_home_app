@@ -6,6 +6,7 @@ import 'package:smart_way_home/features/authentication/models/verify_otp_model.d
 import 'package:smart_way_home/features/home_screen/models/add_rooms_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/add_device_req_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/add_room_new_model.dart';
+import 'package:smart_way_home/features/home_screen/models/new/device_control_req_model.dart';
 import 'package:smart_way_home/utils/constants/secrets.dart';
 import 'package:smart_way_home/utils/http/http_client.dart';
 import 'package:smart_way_home/utils/service_locator/service_locator.dart';
@@ -19,6 +20,8 @@ abstract class ApiService {
   Future<Either> getRooms(String token);
   Future<Either> addRoomsNew(AddRoomNewModel addDeviceNewModel);
   Future<Either> addNewDevice(AddDeviceReqModel addDeviceReqModel);
+  Future<Either> changeDeviceStatus(
+      DeviceControlReqModel deviceControlReqModel);
 }
 
 class ApiServiceImpl extends ApiService {
@@ -138,6 +141,23 @@ class ApiServiceImpl extends ApiService {
       final response = await getIt<HttpClient>().post(
           "${Secrets.addRoomsNew}/${addDeviceReqModel.roomId}/devices",
           data: addDeviceReqModel.toMap());
+      if (response.statusCode == 200) {
+        return Right(response.data);
+      } else {
+        return Left(response.data);
+      }
+    } on DioException catch (e) {
+      return Left(e.response!.data);
+    }
+  }
+
+  @override
+  Future<Either> changeDeviceStatus(
+      DeviceControlReqModel deviceControlReqModel) async {
+    try {
+      final response = await getIt<HttpClient>().post(
+          "${Secrets.addRoomsNew}/${deviceControlReqModel.roomId}/devices/${deviceControlReqModel.deviceId}/control",
+          data: deviceControlReqModel.toMap());
       if (response.statusCode == 200) {
         return Right(response.data);
       } else {

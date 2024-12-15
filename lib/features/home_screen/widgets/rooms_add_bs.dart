@@ -32,7 +32,7 @@ class RoomsAddBs extends StatelessWidget {
           TextField(
             decoration: const InputDecoration(
               hintText: "192.168.0.1",
-              hintStyle: TextStyle(color: SColors.grey),
+              hintStyle: TextStyle(color: SColors.darkGrey),
             ),
             controller: _controller.esp32IpController,
             focusNode: _controller.esp32IpFocusNode,

@@ -25,4 +25,12 @@ class AddDeviceEvent extends RoomsEvent {
   });
 }
 
+class ChangeDeviceStatus extends RoomsEvent {
+  final int roomId;
+  final int deviceId;
+  final bool status;
+  ChangeDeviceStatus(
+      {required this.roomId, required this.deviceId, required this.status});
+}
+
 class GetRoomsEvent extends RoomsEvent {}

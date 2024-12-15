@@ -79,13 +79,28 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: SSizes.spaceBtwItems),
-              Container(
-                width: double.infinity,
-                height: SDeviceUtils.getScreenHeight() * 0.46,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Devices(),
-              ),
+              Obx(() {
+                return Container(
+                  width: double.infinity,
+                  height: SDeviceUtils.getScreenHeight() * 0.46,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  decoration: _controller.filteredDeviceList.isEmpty
+                      ? BoxDecoration(
+                          color: SColors.primary.withOpacity(0.05),
+                          borderRadius: BorderRadius.circular(10))
+                      : null,
+                  child: _controller.filteredDeviceList.isEmpty
+                      ? const Center(
+                          child: Text(
+                          "No Devices Found",
+                          style: TextStyle(
+                            color: SColors.darkGrey,
+                          ),
+                        ))
+                      : Devices(),
+                );
+              })
             ],
           ),
         ),

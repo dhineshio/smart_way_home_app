@@ -17,7 +17,7 @@ class TopBarWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
             children: [
               TextSpan(
-                text: "Elon Musk",
+                text: "smartway",
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ],

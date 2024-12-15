@@ -133,6 +133,11 @@ class RoomsController extends GetxController {
     ),
   ].obs;
 
+  void updateDeviceStatus(int index, bool newValue) {
+    filteredDeviceList[index].isActive = newValue;
+    filteredDeviceList.refresh();
+  }
+
   final TextEditingController esp32IpController = TextEditingController();
   final FocusNode esp32IpFocusNode = FocusNode();
 
