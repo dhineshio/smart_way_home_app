@@ -66,13 +66,6 @@ class HomeScreen extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         builder: (context) => DeviceAddBs(),
                       );
-                      // getIt<AddNewDeviceUseCase>().call(
-                      //   AddDeviceReqModel(
-                      //     roomId: 2,
-                      //     name: 'fan',
-                      //     type: 'fan',
-                      //   ),
-                      // );
                     },
                     child: const Text("+ Add Device"),
                   )

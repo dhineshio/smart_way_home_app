@@ -3,6 +3,7 @@ import 'package:smart_way_home/data/services/api_services.dart';
 import 'package:smart_way_home/features/home_screen/models/add_rooms_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/add_device_req_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/add_room_new_model.dart';
+import 'package:smart_way_home/features/home_screen/models/new/control_device_req_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/device_control_req_model.dart';
 import 'package:smart_way_home/utils/service_locator/service_locator.dart';
 
@@ -13,6 +14,7 @@ abstract class RoomRepo {
   Future<Either> addNewDevice(AddDeviceReqModel addDeviceReqModel);
   Future<Either> changeDeviceStatus(
       DeviceControlReqModel deviceControlReqModel);
+  Future<Either> controlDevice(ControlDeviceReqModel controlDeviceReqModel);
 }
 
 class RoomRepoImpl extends RoomRepo {
@@ -40,5 +42,10 @@ class RoomRepoImpl extends RoomRepo {
   Future<Either> changeDeviceStatus(
       DeviceControlReqModel deviceControlReqModel) {
     return getIt<ApiService>().changeDeviceStatus(deviceControlReqModel);
+  }
+
+  @override
+  Future<Either> controlDevice(ControlDeviceReqModel controlDeviceReqModel) {
+    return getIt<ApiService>().controlDevice(controlDeviceReqModel);
   }
 }

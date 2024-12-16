@@ -29,8 +29,23 @@ class ChangeDeviceStatus extends RoomsEvent {
   final int roomId;
   final int deviceId;
   final bool status;
-  ChangeDeviceStatus(
-      {required this.roomId, required this.deviceId, required this.status});
+  ChangeDeviceStatus({
+    required this.roomId,
+    required this.deviceId,
+    required this.status,
+  });
+}
+
+class ControlDeviceEvent extends RoomsEvent {
+  final String deviceName;
+  final String esp32Ip;
+  final bool status;
+
+  ControlDeviceEvent({
+    required this.deviceName,
+    required this.esp32Ip,
+    required this.status,
+  });
 }
 
 class GetRoomsEvent extends RoomsEvent {}

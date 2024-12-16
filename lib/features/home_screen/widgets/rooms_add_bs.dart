@@ -116,11 +116,12 @@ class RoomsAddBs extends StatelessWidget {
                   var roomId = state.response['id'];
                   var iconId = _controller.clickedIcon.value;
                   var roomName = state.response['name'];
+                  var esp32Ip = state.response['esp32Ip'];
                   _controller.roomInfo1.add(RoomsInfoModel(
-                    roomId: roomId,
-                    iconId: iconId,
-                    roomName: roomName,
-                  ));
+                      roomId: roomId,
+                      iconId: iconId,
+                      roomName: roomName,
+                      esp32Id: esp32Ip));
                   _controller.toggleRoomSelection(0);
                   Get.back();
                   Get.snackbar(
@@ -179,6 +180,7 @@ class RoomsAddBs extends StatelessWidget {
                     _controller.clickedIcon.value = iconId;
                     // print(iconId);
                     // print(_controller.esp32IpController.text);
+                    // ! send to the server - add rooms
                     context.read<RoomsBloc>().add(
                           AddRoomsNewEvent(
                             roomName: roomName,

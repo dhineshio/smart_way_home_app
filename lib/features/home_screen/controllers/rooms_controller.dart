@@ -18,6 +18,7 @@ class RoomsController extends GetxController {
   var deviceInfo = <DeviceInfoModel>[].obs;
   var filteredDeviceList = <DeviceInfoModel>[].obs;
   var selectedRoom = 0.obs;
+  var selectedRoomEspIp = "".obs;
 
   void filterDevicesByRoomId(int roomId) {
     filteredDeviceList.value =
@@ -98,35 +99,35 @@ class RoomsController extends GetxController {
   final deviceList = [
     DeviceIconModel(
       deviceId: 101,
-      deviceName: "Light-1",
+      deviceName: "Light 1",
       deviceType: "None",
       iconId: SIcons.roomHall,
       isClicked: false,
     ),
     DeviceIconModel(
       deviceId: 102,
-      deviceName: "Light-2",
+      deviceName: "Light 2",
       deviceType: "None",
       iconId: SIcons.roomKitchen,
       isClicked: false,
     ),
     DeviceIconModel(
       deviceId: 103,
-      deviceName: "Light-3",
+      deviceName: "Light 3",
       deviceType: "None",
       iconId: SIcons.roomBalcany,
       isClicked: false,
     ),
     DeviceIconModel(
       deviceId: 104,
-      deviceName: "Light-4",
+      deviceName: "Light 4",
       deviceType: "None",
       iconId: SIcons.roomHall,
       isClicked: false,
     ),
     DeviceIconModel(
       deviceId: 105,
-      deviceName: "Light",
+      deviceName: "Fan",
       deviceType: "None",
       iconId: SIcons.roomDiningRoom,
       isClicked: false,
@@ -150,6 +151,8 @@ class RoomsController extends GetxController {
 
   void toggleRoomSelection(int index) {
     selectedRoom = roomInfo1[index].roomId.obs;
+    selectedRoomEspIp = roomInfo1[index].esp32Id.obs;
+    print(selectedRoomEspIp);
     filterDevicesByRoomId(selectedRoom.value);
     for (int i = 0; i < roomInfo1.length; i++) {
       roomInfo1[i].isActive = i == index;

@@ -4,10 +4,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:smart_way_home/features/home_screen/models/add_rooms_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/add_device_req_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/add_room_new_model.dart';
+import 'package:smart_way_home/features/home_screen/models/new/control_device_req_model.dart';
 import 'package:smart_way_home/features/home_screen/models/new/device_control_req_model.dart';
 import 'package:smart_way_home/features/home_screen/usecase/add_new_device_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/add_room_new_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/add_room_use_case.dart';
+import 'package:smart_way_home/features/home_screen/usecase/control_device_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/device_control_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/get_room_use_case.dart';
 import 'package:smart_way_home/utils/service_locator/service_locator.dart';
@@ -17,6 +19,32 @@ part 'rooms_state.dart';
 
 class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
   RoomsBloc() : super(RoomsInitialState()) {
+    on<ControlDeviceEvent>((state, emit) async {
+      try {
+        final deviceName = state.deviceName;
+        final esp32Ip = state.esp32Ip;
+        final status = state.status;
+        final response =
+            await getIt<ControlDeviceUseCase>().call(ControlDeviceReqModel(
+          deviceName: deviceName,
+          esp32Ip: esp32Ip,
+          status: status,
+        ));
+        return response.fold(
+            (failure) => emit(
+                  ControlFailureState(error: "Failed to change"),
+                ), (success) {
+          return emit(
+            ControlSuccessState(
+              response: ((response as Right).value),
+            ),
+          );
+        });
+      } catch (e) {
+        return emit(AddDeviceFailureState(error: e.toString()));
+      }
+    });
+
     on<ChangeDeviceStatus>((state, emit) async {
       try {
         final roomId = state.roomId;

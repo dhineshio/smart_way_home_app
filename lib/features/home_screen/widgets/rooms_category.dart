@@ -154,13 +154,11 @@ class RoomsCategory extends StatelessWidget {
       return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: _controller.roomInfo1.length,
-        // itemCount: _controller.roomInfo.length,
         itemBuilder: (context, index) {
           return Row(
             children: [
               GestureDetector(
                 onTap: () => _controller.toggleRoomSelection(index),
-                // onTap: () => print("Tapped : $index"),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,

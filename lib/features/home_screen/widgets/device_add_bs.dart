@@ -119,6 +119,7 @@ class DeviceAddBs extends StatelessWidget {
               listener: (context, state) {
                 if (state is AddDeviceSuccessState) {
                   var roomId = _controller.selectedRoom.value;
+                  var esp32Ip = _controller.selectedRoomEspIp.value;
                   var deviceId = state.response['id'];
                   var deviceName = state.response['name'];
                   var deviceType = state.response['type'];
@@ -143,6 +144,7 @@ class DeviceAddBs extends StatelessWidget {
                       deviceName: deviceName,
                       deviceType: deviceType,
                       isActive: status,
+                      roomEsp32Ip: esp32Ip,
                     ),
                   );
                   _controller.filterDevicesByRoomId(roomId);

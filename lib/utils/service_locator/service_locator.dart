@@ -12,6 +12,7 @@ import 'package:smart_way_home/features/home_screen/bloc/rooms_bloc.dart';
 import 'package:smart_way_home/features/home_screen/usecase/add_new_device_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/add_room_new_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/add_room_use_case.dart';
+import 'package:smart_way_home/features/home_screen/usecase/control_device_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/device_control_use_case.dart';
 import 'package:smart_way_home/features/home_screen/usecase/get_room_use_case.dart';
 import 'package:smart_way_home/utils/http/http_client.dart';
@@ -40,6 +41,7 @@ Future<void> initiate() async {
   getIt.registerSingleton<AddRoomNewUseCase>(AddRoomNewUseCase());
   getIt.registerSingleton<AddNewDeviceUseCase>(AddNewDeviceUseCase());
   getIt.registerSingleton<DeviceControlUseCase>(DeviceControlUseCase());
+  getIt.registerSingleton<ControlDeviceUseCase>(ControlDeviceUseCase());
 
   // BLoc
   getIt.registerLazySingleton<AuthBloc>(() => AuthBloc());

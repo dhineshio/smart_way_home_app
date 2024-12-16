@@ -55,3 +55,13 @@ class DeviceStatusChangedFailureState extends RoomsState {
   final String error;
   DeviceStatusChangedFailureState({required this.error});
 }
+
+class ControlSuccessState extends RoomsState {
+  final String response;
+  ControlSuccessState({required this.response});
+}
+
+class ControlFailureState extends RoomsState {
+  final String error;
+  ControlFailureState({required this.error});
+}

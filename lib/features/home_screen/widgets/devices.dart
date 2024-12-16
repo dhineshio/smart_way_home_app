@@ -3,11 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:smart_way_home/features/home_screen/bloc/rooms_bloc.dart';
 import 'package:smart_way_home/features/home_screen/controllers/rooms_controller.dart';
-import 'package:smart_way_home/features/home_screen/models/new/device_control_req_model.dart';
-import 'package:smart_way_home/features/home_screen/usecase/device_control_use_case.dart';
 import 'package:smart_way_home/utils/constants/colors.dart';
 import 'package:smart_way_home/utils/image_convert/FUI.dart';
-import 'package:smart_way_home/utils/service_locator/service_locator.dart';
 
 class Devices extends StatelessWidget {
   Devices({super.key});
@@ -56,7 +53,8 @@ class Devices extends StatelessWidget {
                         ),
                         BlocConsumer<RoomsBloc, RoomsState>(
                           listener: (context, state) {
-                            if (state is DeviceStatusChangedSuccessState) {
+                            if (state is ControlSuccessState) {
+                              _controller.updateDeviceStatus(index, true);
                               Get.snackbar(
                                 "Success",
                                 snackPosition: SnackPosition.BOTTOM,
@@ -65,9 +63,9 @@ class Devices extends StatelessWidget {
                                 colorText: SColors.textWhite,
                                 duration: 800.milliseconds,
                               );
-                              _controller.updateDeviceStatus(index, true);
                             }
-                            if (state is DeviceStatusChangedFailureState) {
+                            if (state is ControlFailureState) {
+                              _controller.updateDeviceStatus(index, false);
                               Get.snackbar(
                                 "Failed",
                                 snackPosition: SnackPosition.BOTTOM,
@@ -76,7 +74,6 @@ class Devices extends StatelessWidget {
                                 colorText: SColors.textWhite,
                                 duration: 1500.milliseconds,
                               );
-                              _controller.updateDeviceStatus(index, false);
                             }
                           },
                           builder: (context, state) {
@@ -84,14 +81,16 @@ class Devices extends StatelessWidget {
                               value: _controller
                                   .filteredDeviceList[index].isActive!,
                               onChanged: (value) {
+                                var deviceName = _controller
+                                    .filteredDeviceList[index].deviceName;
+                                var esp32Ip = _controller
+                                    .filteredDeviceList[index].roomEsp32Ip;
                                 context.read<RoomsBloc>().add(
-                                      ChangeDeviceStatus(
-                                          roomId: _controller
-                                              .filteredDeviceList[index].roomId,
-                                          deviceId: _controller
-                                              .filteredDeviceList[index]
-                                              .deviceId,
-                                          status: value),
+                                      ControlDeviceEvent(
+                                        deviceName: deviceName,
+                                        esp32Ip: esp32Ip,
+                                        status: value,
+                                      ),
                                     );
                                 _controller.updateDeviceStatus(index, value);
                               },
